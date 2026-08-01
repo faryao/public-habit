@@ -2,7 +2,10 @@
 layout: default
 ---
 {% assign sorted_habits = site.habits | sort_natural: "name" %}
-{% assign new_habit_template = "---\nname: Habit name\n---\n" %}
+{% capture new_habit_template %}---
+name: Habit name
+---
+{% endcapture %}
 {% capture new_habit_url %}https://github.com/{{ site.github_username }}/{{ site.repository_name }}/new/main/_habits?filename=habit-name.md&value={{ new_habit_template | url_encode }}{% endcapture %}
 
 <section class="app-shell"
