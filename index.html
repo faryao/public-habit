@@ -1,0 +1,95 @@
+---
+layout: default
+---
+{% assign sorted_habits = site.habits | sort_natural: "name" %}
+{% assign new_habit_template = "---\nname: Habit name\n---\n" %}
+{% capture new_habit_url %}https://github.com/{{ site.github_username }}/{{ site.repository_name }}/new/main/_habits?filename=habit-name.md&value={{ new_habit_template | url_encode }}{% endcapture %}
+
+<section class="app-shell"
+  id="habit-app"
+  data-repository="{{ site.github_username }}/{{ site.repository_name }}"
+  data-new-habit-url="{{ new_habit_url | strip }}"
+  data-time-zone="{{ site.timezone }}">
+
+  {% if sorted_habits.size == 0 %}
+  <section class="empty-state">
+    <span class="empty-icon" aria-hidden="true">＋</span>
+    <p class="section-kicker">Nothing to track yet</p>
+    <h1>Create your first habit</h1>
+    <p>Habits and proof images live as Markdown in this public repository.</p>
+    <a class="primary-button" href="{{ new_habit_url | strip }}" target="_blank" rel="noreferrer">Create your first habit on GitHub ↗</a>
+  </section>
+  {% else %}
+  <aside class="habit-sidebar" aria-labelledby="habit-list-title">
+    <div class="sidebar-heading">
+      <div>
+        <p class="section-kicker">Your practice</p>
+        <h1 id="habit-list-title">Habits</h1>
+      </div>
+      <a class="icon-button" href="{{ new_habit_url | strip }}" target="_blank" rel="noreferrer" aria-label="Create a habit on GitHub">＋</a>
+    </div>
+
+    <div class="habit-list" role="list">
+      {% for habit in sorted_habits %}
+        {% assign identifier = habit.identifier | default: habit.slug %}
+        <button class="habit-option{% if forloop.first %} is-selected{% endif %}"
+          type="button"
+          data-habit-id="{{ identifier | escape }}"
+          data-habit-name="{{ habit.name | escape }}"
+          data-habit-path="{{ habit.relative_path | escape }}"
+          aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">
+          <span class="habit-option-mark" aria-hidden="true"></span>
+          <span>{{ habit.name }}</span>
+        </button>
+      {% endfor %}
+    </div>
+
+    <a class="sidebar-edit" id="edit-habit-link" href="#" target="_blank" rel="noreferrer">Edit or delete habit on GitHub ↗</a>
+  </aside>
+
+  <section class="calendar-panel" aria-labelledby="calendar-title">
+    <header class="calendar-header">
+      <div>
+        <p class="section-kicker" id="selected-habit-label">Daily proof</p>
+        <h2 id="calendar-title"><span id="calendar-label" aria-live="polite">Month</span></h2>
+        <p class="calendar-summary" id="calendar-summary" aria-live="polite">Loading proof records…</p>
+      </div>
+      <div class="calendar-controls" role="group" aria-label="Calendar navigation">
+        <button class="calendar-arrow" id="calendar-previous" type="button" aria-label="Previous month">←</button>
+        <button class="calendar-today" id="calendar-today" type="button">Today</button>
+        <button class="calendar-arrow" id="calendar-next" type="button" aria-label="Next month">→</button>
+      </div>
+    </header>
+
+    <div class="content-warnings" id="content-warnings" hidden>
+      <strong>Content needs attention</strong>
+      <ul id="content-warning-list"></ul>
+    </div>
+
+    <div class="calendar-body">
+      <div class="calendar-weekdays" aria-hidden="true">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+      <div class="calendar-legend">
+        <span><i class="legend-valid"></i>Image proof</span>
+        <span><i class="legend-empty"></i>No proof</span>
+        <span><i class="legend-warning"></i>Proof missing</span>
+      </div>
+      <noscript><p class="calendar-noscript">JavaScript is required for the interactive calendar.</p></noscript>
+    </div>
+  </section>
+
+  <div id="proof-source" hidden>
+    {% for proof in site.proofs %}
+      <article
+        data-proof-habit="{{ proof.habit | escape }}"
+        data-proof-date="{{ proof.date | date: '%Y-%m-%d' }}"
+        data-proof-url="{{ proof.url | relative_url }}"
+        data-proof-path="{{ proof.relative_path | escape }}">
+        <div class="proof-rendered">{{ proof.content | markdownify }}</div>
+      </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>

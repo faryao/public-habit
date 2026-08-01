@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{% assign proof_habit_name = page.habit %}
+{% for habit in site.habits %}
+  {% if habit.slug == page.habit %}{% assign proof_habit_name = habit.name %}{% endif %}
+{% endfor %}
+<article class="proof-page">
+  <nav class="proof-nav" aria-label="Proof navigation">
+    <a href="{{ '/' | relative_url }}">← Back to calendar</a>
+    <a href="https://github.com/{{ site.github_username }}/{{ site.repository_name }}/edit/main/{{ page.relative_path }}" target="_blank" rel="noreferrer">Edit on GitHub ↗</a>
+  </nav>
+  <header class="proof-header">
+    <p class="section-kicker">Proof record</p>
+    <h1>{{ proof_habit_name }}</h1>
+    <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%A, %-d %B %Y" }}</time>
+  </header>
+  <div class="proof-content">
+    {{ content }}
+  </div>
+</article>

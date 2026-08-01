@@ -1,0 +1,33 @@
+title: Public Habit
+description: A calendar-first public habit tracker with image proof.
+author: Yuan Yao
+timezone: Europe/Dublin
+future: true
+url: https://faryao.github.io
+baseurl: /public-habit
+github_username: faryao
+repository_name: public-habit
+
+collections:
+  habits:
+    output: false
+  proofs:
+    output: true
+    permalink: /proofs/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: proofs
+    values:
+      layout: proof
+
+exclude:
+  - CONTEXT.md
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - docs
+  - test
+
