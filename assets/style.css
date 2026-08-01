@@ -17,11 +17,14 @@
 
 * { box-sizing: border-box; }
 
-html { min-width: 1040px; background: var(--paper); }
+html { min-width: 1040px; height: 100%; background: var(--paper); }
 
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 88px minmax(0, 1fr) 40px;
+  overflow: hidden;
   color: var(--ink);
   background:
     radial-gradient(circle at 8% 5%, rgba(47, 200, 179, 0.13), transparent 28rem),
@@ -40,7 +43,7 @@ main {
 }
 
 .site-header {
-  height: 102px;
+  height: 88px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -86,7 +89,8 @@ main {
 .proof-nav a:hover { color: var(--mint-deep); text-decoration: underline; }
 
 .app-shell {
-  min-height: 690px;
+  height: 100%;
+  min-height: 0;
   border: 1px solid var(--line);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.93);
@@ -102,7 +106,7 @@ main {
 .habit-sidebar {
   display: flex;
   flex-direction: column;
-  min-height: 690px;
+  min-height: 0;
   padding: 34px 25px 25px;
   border-right: 1px solid var(--line);
   background: linear-gradient(180deg, #f4fbf9, #eef8f6);
@@ -196,7 +200,14 @@ main {
 
 .sidebar-edit { margin-top: auto; padding: 14px; }
 
-.calendar-panel { min-width: 0; padding: 37px 39px 39px; }
+.calendar-panel {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 27px 39px 25px;
+  overflow: hidden;
+}
 .calendar-header { align-items: flex-end; margin-bottom: 27px; }
 .calendar-header h2 { font-size: 38px; line-height: 1.06; }
 .calendar-summary { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
@@ -229,6 +240,10 @@ main {
 .content-warnings a { color: inherit; }
 
 .calendar-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--line);
   border-radius: 18px;
   overflow: hidden;
@@ -249,8 +264,9 @@ main {
 }
 .calendar-weekdays span { padding: 12px 5px; background: #f2f8f7; }
 
-.calendar-grid { display: grid; gap: 1px; }
-.calendar-cell { min-width: 0; height: 101px; background: white; }
+.calendar-grid { flex: 1; min-height: 0; display: grid; gap: 1px; }
+.calendar-row { min-height: 0; }
+.calendar-cell { min-width: 0; min-height: 0; height: auto; background: white; }
 .calendar-cell.is-placeholder { background: #f6f9f8; }
 
 .calendar-day {
@@ -328,7 +344,7 @@ main {
   display: grid;
   justify-items: center;
   align-content: center;
-  min-height: 690px;
+  height: 100%;
   padding: 80px;
   text-align: center;
 }
@@ -346,7 +362,10 @@ main {
 .proof-content { color: #304a47; font-size: 17px; line-height: 1.75; }
 .proof-content img { display: block; max-width: 100%; max-height: 70vh; margin: 28px auto; border-radius: 18px; box-shadow: 0 16px 45px rgba(22, 67, 63, 0.15); }
 
-.site-footer { display: flex; justify-content: space-between; padding: 29px 2px 38px; color: #81938f; font-size: 11px; }
+.site-footer { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; color: #81938f; font-size: 11px; }
+
+main { min-height: 0; overflow: auto; }
+main:has(.app-shell) { overflow: hidden; }
 
 :focus-visible { outline: 3px solid rgba(47, 200, 179, 0.7); outline-offset: 3px; }
 
@@ -354,6 +373,4 @@ main {
   .site-header, .site-footer, main { width: calc(100% - 40px); }
   .app-shell:has(.habit-sidebar) { grid-template-columns: 235px minmax(0, 1fr); }
   .calendar-panel { padding-inline: 28px; }
-  .calendar-cell { height: 92px; }
 }
-
