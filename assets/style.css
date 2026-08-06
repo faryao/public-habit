@@ -354,13 +354,38 @@ main {
 .primary-button { padding: 14px 20px; border-radius: 12px; color: white; background: var(--mint-dark); text-decoration: none; font-size: 14px; font-weight: 800; box-shadow: 0 10px 25px rgba(11, 118, 110, 0.2); }
 .primary-button:hover { background: var(--mint-deep); }
 
-.proof-page { max-width: 900px; min-height: 620px; margin: 0 auto; padding: 36px 48px 60px; border: 1px solid var(--line); border-radius: 28px; background: white; box-shadow: var(--shadow); }
+.proof-page,
+.habit-page { max-width: 900px; min-height: 620px; margin: 0 auto; padding: 36px 48px 60px; border: 1px solid var(--line); border-radius: 28px; background: white; box-shadow: var(--shadow); }
 .proof-nav { padding-bottom: 26px; border-bottom: 1px solid var(--line); }
 .proof-header { padding: 44px 0 30px; text-align: center; }
 .proof-header h1 { font-size: 48px; }
 .proof-header time { display: block; margin-top: 11px; color: var(--muted); font-size: 14px; }
 .proof-content { color: #304a47; font-size: 17px; line-height: 1.75; }
 .proof-content img { display: block; max-width: 100%; max-height: 70vh; margin: 28px auto; border-radius: 18px; box-shadow: 0 16px 45px rgba(22, 67, 63, 0.15); }
+
+.habit-identifier { margin-top: 11px; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; }
+.habit-content { color: #304a47; font-size: 17px; line-height: 1.75; }
+.habit-content img { display: block; max-width: 100%; max-height: 70vh; margin: 28px auto; border-radius: 18px; box-shadow: 0 16px 45px rgba(22, 67, 63, 0.15); }
+.habit-proofs { margin-top: 38px; padding-top: 26px; border-top: 1px solid var(--line); }
+.habit-proofs h2 { margin: 0 0 16px; font-family: Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 500; letter-spacing: -0.03em; }
+.habit-proof-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.habit-proof-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  background: var(--paper);
+  text-decoration: none;
+  font-weight: 700;
+}
+.habit-proof-list a:hover { border-color: #acd8d1; color: var(--mint-dark); background: var(--soft); }
+.habit-proof-list time { font-weight: 600; }
+.habit-proof-list span { color: var(--muted); }
+.habit-proofs-empty { margin: 0; color: var(--muted); }
 
 .site-footer { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; color: #81938f; font-size: 11px; }
 

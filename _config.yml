@@ -10,12 +10,18 @@ repository_name: public-habit
 
 collections:
   habits:
-    output: false
+    output: true
+    permalink: /habits/:path/
   proofs:
     output: true
     permalink: /proofs/:path/
 
 defaults:
+  - scope:
+      path: ""
+      type: habits
+    values:
+      layout: habit
   - scope:
       path: ""
       type: proofs
