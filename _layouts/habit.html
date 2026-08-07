@@ -3,9 +3,16 @@ layout: default
 ---
 {% assign habit_identifier = page.identifier | default: page.slug %}
 {% assign sorted_habits = site.habits | sort_natural: "name" %}
+{% capture new_habit_template %}---
+name: Habit name
+---
+{% endcapture %}
+{% capture new_habit_url %}https://github.com/{{ site.github_username }}/{{ site.repository_name }}/new/main/_habits?filename=habit-name.md&value={{ new_habit_template | url_encode }}{% endcapture %}
+
 <section class="app-shell"
   id="habit-app"
   data-repository="{{ site.github_username }}/{{ site.repository_name }}"
+  data-new-habit-url="{{ new_habit_url | strip }}"
   data-selected-habit="{{ habit_identifier }}"
   data-time-zone="{{ site.timezone }}">
 
@@ -15,6 +22,7 @@ layout: default
         <p class="section-kicker">Your practice</p>
         <h1 id="habit-list-title">Habits</h1>
       </div>
+      <a class="icon-button" href="{{ new_habit_url | strip }}" target="_blank" rel="noreferrer" aria-label="Create a habit on GitHub">＋</a>
     </div>
 
     <div class="habit-list" role="list">
@@ -37,22 +45,7 @@ layout: default
     <a class="sidebar-edit" id="edit-habit-link" href="#" target="_blank" rel="noreferrer">Edit or delete habit on GitHub ↗</a>
   </aside>
 
-  <div class="habit-panel">
-    <article class="habit-detail">
-      <nav class="proof-nav" aria-label="Habit navigation">
-        <a href="{{ '/' | relative_url }}">← Back to calendar</a>
-        <a href="https://github.com/{{ site.github_username }}/{{ site.repository_name }}/edit/main/{{ page.relative_path }}" target="_blank" rel="noreferrer">Edit on GitHub ↗</a>
-      </nav>
-      <header class="proof-header">
-        <p class="section-kicker">Habit</p>
-        <h1>{{ page.name }}</h1>
-        <p class="habit-identifier">{{ habit_identifier }}</p>
-      </header>
-      {% if content.strip.size > 0 %}
-      <div class="habit-content">{{ content }}</div>
-      {% endif %}
-    </article>
+  {% include calendar-panel.html %}
 
-    {% include calendar-panel.html %}
-  </div>
+  {% include proof-source.html %}
 </section>
