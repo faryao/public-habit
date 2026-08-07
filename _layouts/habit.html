@@ -2,7 +2,6 @@
 layout: default
 ---
 {% assign habit_identifier = page.identifier | default: page.slug %}
-{% assign habit_proofs = site.proofs | where: "habit", habit_identifier | sort: "date" | reverse %}
 {% assign sorted_habits = site.habits | sort_natural: "name" %}
 <section class="app-shell"
   id="habit-app"
@@ -52,23 +51,6 @@ layout: default
       {% if content.strip.size > 0 %}
       <div class="habit-content">{{ content }}</div>
       {% endif %}
-      <section class="habit-proofs" aria-labelledby="habit-proofs-title">
-        <h2 id="habit-proofs-title">Proof records</h2>
-        {% if habit_proofs.size == 0 %}
-        <p class="habit-proofs-empty">No proof records yet.</p>
-        {% else %}
-        <ul class="habit-proof-list">
-          {% for proof in habit_proofs %}
-          <li>
-            <a href="{{ proof.url | relative_url }}">
-              <time datetime="{{ proof.date | date: '%Y-%m-%d' }}">{{ proof.date | date: "%A, %-d %B %Y" }}</time>
-              <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </section>
     </article>
 
     {% include calendar-panel.html %}
