@@ -3,34 +3,76 @@ layout: default
 ---
 {% assign habit_identifier = page.identifier | default: page.slug %}
 {% assign habit_proofs = site.proofs | where: "habit", habit_identifier | sort: "date" | reverse %}
-<article class="habit-page">
-  <nav class="proof-nav" aria-label="Habit navigation">
-    <a href="{{ '/' | relative_url }}">← Back to calendar</a>
-    <a href="https://github.com/{{ site.github_username }}/{{ site.repository_name }}/edit/main/{{ page.relative_path }}" target="_blank" rel="noreferrer">Edit on GitHub ↗</a>
-  </nav>
-  <header class="proof-header">
-    <p class="section-kicker">Habit</p>
-    <h1>{{ page.name }}</h1>
-    <p class="habit-identifier">{{ habit_identifier }}</p>
-  </header>
-  {% if content.strip.size > 0 %}
-  <div class="habit-content">{{ content }}</div>
-  {% endif %}
-  <section class="habit-proofs" aria-labelledby="habit-proofs-title">
-    <h2 id="habit-proofs-title">Proof records</h2>
-    {% if habit_proofs.size == 0 %}
-    <p class="habit-proofs-empty">No proof records yet.</p>
-    {% else %}
-    <ul class="habit-proof-list">
-      {% for proof in habit_proofs %}
-      <li>
-        <a href="{{ proof.url | relative_url }}">
-          <time datetime="{{ proof.date | date: '%Y-%m-%d' }}">{{ proof.date | date: "%A, %-d %B %Y" }}</time>
-          <span aria-hidden="true">↗</span>
+{% assign sorted_habits = site.habits | sort_natural: "name" %}
+<section class="app-shell"
+  id="habit-app"
+  data-repository="{{ site.github_username }}/{{ site.repository_name }}"
+  data-selected-habit="{{ habit_identifier }}"
+  data-time-zone="{{ site.timezone }}">
+
+  <aside class="habit-sidebar" aria-labelledby="habit-list-title">
+    <div class="sidebar-heading">
+      <div>
+        <p class="section-kicker">Your practice</p>
+        <h1 id="habit-list-title">Habits</h1>
+      </div>
+    </div>
+
+    <div class="habit-list" role="list">
+      {% for habit in sorted_habits %}
+        {% assign identifier = habit.identifier | default: habit.slug %}
+        {% assign is_current = false %}
+        {% if habit.url == page.url %}{% assign is_current = true %}{% endif %}
+        <a class="habit-option{% if is_current %} is-selected{% endif %}"
+          href="{{ habit.url | relative_url }}"
+          data-habit-id="{{ identifier | escape }}"
+          data-habit-name="{{ habit.name | escape }}"
+          data-habit-path="{{ habit.relative_path | escape }}"
+          {% if is_current %}aria-current="page"{% endif %}>
+          <span class="habit-option-mark" aria-hidden="true"></span>
+          <span>{{ habit.name }}</span>
         </a>
-      </li>
       {% endfor %}
-    </ul>
-    {% endif %}
-  </section>
-</article>
+    </div>
+
+    <a class="sidebar-edit" id="edit-habit-link" href="#" target="_blank" rel="noreferrer">Edit or delete habit on GitHub ↗</a>
+  </aside>
+
+  <div class="habit-panel">
+    <article class="habit-detail">
+      <nav class="proof-nav" aria-label="Habit navigation">
+        <a href="{{ '/' | relative_url }}">← Back to calendar</a>
+        <a href="https://github.com/{{ site.github_username }}/{{ site.repository_name }}/edit/main/{{ page.relative_path }}" target="_blank" rel="noreferrer">Edit on GitHub ↗</a>
+      </nav>
+      <header class="proof-header">
+        <p class="section-kicker">Habit</p>
+        <h1>{{ page.name }}</h1>
+        <p class="habit-identifier">{{ habit_identifier }}</p>
+      </header>
+      {% if content.strip.size > 0 %}
+      <div class="habit-content">{{ content }}</div>
+      {% endif %}
+      <section class="habit-proofs" aria-labelledby="habit-proofs-title">
+        <h2 id="habit-proofs-title">Proof records</h2>
+        {% if habit_proofs.size == 0 %}
+        <p class="habit-proofs-empty">No proof records yet.</p>
+        {% else %}
+        <ul class="habit-proof-list">
+          {% for proof in habit_proofs %}
+          <li>
+            <a href="{{ proof.url | relative_url }}">
+              <time datetime="{{ proof.date | date: '%Y-%m-%d' }}">{{ proof.date | date: "%A, %-d %B %Y" }}</time>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </section>
+    </article>
+
+    {% include calendar-panel.html %}
+  </div>
+
+  {% include proof-source.html %}
+</section>

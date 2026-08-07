@@ -1,0 +1,32 @@
+<section class="calendar-panel" aria-labelledby="calendar-title">
+  <header class="calendar-header">
+    <div>
+      <p class="section-kicker" id="selected-habit-label">Daily proof</p>
+      <h2 id="calendar-title"><span id="calendar-label" aria-live="polite">Month</span></h2>
+      <p class="calendar-summary" id="calendar-summary" aria-live="polite">Loading proof records…</p>
+    </div>
+    <div class="calendar-controls" role="group" aria-label="Calendar navigation">
+      <button class="calendar-arrow" id="calendar-previous" type="button" aria-label="Previous month">←</button>
+      <button class="calendar-today" id="calendar-today" type="button">Today</button>
+      <button class="calendar-arrow" id="calendar-next" type="button" aria-label="Next month">→</button>
+    </div>
+  </header>
+
+  <div class="content-warnings" id="content-warnings" hidden>
+    <strong>Content needs attention</strong>
+    <ul id="content-warning-list"></ul>
+  </div>
+
+  <div class="calendar-body">
+    <div class="calendar-weekdays" aria-hidden="true">
+      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+    </div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+    <div class="calendar-legend">
+      <span><i class="legend-valid"></i>Image proof</span>
+      <span><i class="legend-empty"></i>No proof</span>
+      <span><i class="legend-warning"></i>Proof missing</span>
+    </div>
+    <noscript><p class="calendar-noscript">JavaScript is required for the interactive calendar.</p></noscript>
+  </div>
+</section>

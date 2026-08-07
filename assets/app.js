@@ -81,11 +81,10 @@
 
     const repository = app.dataset.repository;
     const timeZone = app.dataset.timeZone || 'Europe/Dublin';
-    const habits = Array.from(app.querySelectorAll('[data-habit-id]')).map((button) => ({
-      button,
-      id: button.dataset.habitId,
-      name: button.dataset.habitName,
-      path: button.dataset.habitPath
+    const habits = Array.from(app.querySelectorAll('[data-habit-id]')).map((link) => ({
+      id: link.dataset.habitId,
+      name: link.dataset.habitName,
+      path: link.dataset.habitPath
     }));
     if (habits.length === 0) return;
 
@@ -144,7 +143,7 @@
     const currentMonthIndex = toMonthIndex(todayDate);
     const monthFormatter = new Intl.DateTimeFormat('en-IE', { month: 'long', year: 'numeric' });
     const fullDateFormatter = new Intl.DateTimeFormat('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    let selectedHabit = habits[0];
+    const selectedHabit = habits.find((habit) => habit.id === app.dataset.selectedHabit) || habits[0];
     let displayedMonthIndex = currentMonthIndex;
 
     function renderWarnings() {
@@ -254,23 +253,14 @@
       calendarLabel.textContent = monthName;
       selectedHabitLabel.textContent = selectedHabit.name;
       calendarSummary.textContent = `${validCount} image ${validCount === 1 ? 'proof' : 'proofs'}${missingCount ? ` · ${missingCount} missing ${missingCount === 1 ? 'image' : 'images'}` : ''}`;
-      editHabitLink.href = editUrl(repository, selectedHabit.path);
-      editHabitLink.setAttribute('aria-label', `Edit or delete ${selectedHabit.name} on GitHub`);
+      if (editHabitLink) {
+        editHabitLink.href = editUrl(repository, selectedHabit.path);
+        editHabitLink.setAttribute('aria-label', `Edit or delete ${selectedHabit.name} on GitHub`);
+      }
       calendarGrid.replaceChildren(fragment);
-      todayMonth.disabled = displayedMonthIndex === currentMonthIndex;
+      if (todayMonth) todayMonth.disabled = displayedMonthIndex === currentMonthIndex;
     }
 
-    function selectHabit(habit) {
-      selectedHabit = habit;
-      habits.forEach((candidate) => {
-        const selected = candidate === habit;
-        candidate.button.classList.toggle('is-selected', selected);
-        candidate.button.setAttribute('aria-pressed', String(selected));
-      });
-      renderCalendar();
-    }
-
-    habits.forEach((habit) => habit.button.addEventListener('click', () => selectHabit(habit)));
     previousMonth.addEventListener('click', () => {
       displayedMonthIndex -= 1;
       renderCalendar();

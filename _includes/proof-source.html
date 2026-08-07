@@ -1,0 +1,11 @@
+<div id="proof-source" hidden>
+  {% for proof in site.proofs %}
+    <article
+      data-proof-habit="{{ proof.habit | escape }}"
+      data-proof-date="{{ proof.date | date: '%Y-%m-%d' }}"
+      data-proof-url="{{ proof.url | relative_url }}"
+      data-proof-path="{{ proof.relative_path | escape }}">
+      <div class="proof-rendered">{{ proof.content | markdownify }}</div>
+    </article>
+  {% endfor %}
+</div>
